@@ -28,7 +28,7 @@ interface IDefinitionNodes {
 	subscriptions: DefinitionNode[];
 }
 
-export function parser(document: DocumentNode): IDocumentDefinition {
+export default function parser(document: DocumentNode): IDocumentDefinition {
 	let variables: VariableDefinitionNode[];
 	let name: string;
 	let type: DocumentType;
