@@ -33,7 +33,8 @@
     "inferno-create-element": "1.2.2",
     "inferno-helpers": "1.2.2",
     "apollo-client": "*",
-    "graphql": "*"
+    "graphql": "*",
+    "redux": "*"
   },
   "bundledDependencies": [
     "inferno-helpers"
