@@ -32,7 +32,8 @@
     "inferno-create-class": "1.2.2",
     "inferno-create-element": "1.2.2",
     "inferno-helpers": "1.2.2",
-    "apollo-client": "*"
+    "apollo-client": "*",
+    "graphql": "*"
   },
   "bundledDependencies": [
     "inferno-helpers"
