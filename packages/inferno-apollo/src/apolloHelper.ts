@@ -235,7 +235,7 @@ export default class ApolloHelper {
 			throwError(
 				`the result of the '${this.displayName}' operation contains keys that ` +
 				`conflict with the return object.` +
-				clashingKeys.map(k => `'${k}'`).join(', ') + ` not allowed.`
+				clashingKeys.map((k: string) => `'${k}'`).join(', ') + ` not allowed.`
 			);
 		}
 		this.forceRenderChildren();
