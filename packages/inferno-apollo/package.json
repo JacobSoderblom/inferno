@@ -34,7 +34,8 @@
     "hoist-non-inferno-statics": "*",
     "apollo-client": "*",
     "graphql": "*",
-    "redux": "*"
+    "redux": "*",
+    "lodash": "*"
   },
   "bundledDependencies": [
     "inferno-helpers"
