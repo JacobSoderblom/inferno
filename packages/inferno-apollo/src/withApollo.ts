@@ -6,7 +6,7 @@ import { throwError } from 'inferno-helpers';
 import { OperationOption } from './types';
 import getDisplayName from './utils/getDisplayName';
 
-export function withApollo(
+export default function withApollo(
 	WrappedComponent,
 	operationOptions: OperationOption = {}
 ) {
@@ -16,6 +16,7 @@ export function withApollo(
 		static displayName = displayName;
 		static WrappedComponent = WrappedComponent;
 
+		public props: any;
 		private client: any;
 
 		constructor(props, context) {
@@ -32,7 +33,7 @@ export function withApollo(
 		}
 
 		render() {
-			const props = Object.assign({}, this.props, {
+			const props = Object.assign({}, this.props, {
 				client: this.client
 			});
 
