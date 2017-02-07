@@ -8,18 +8,7 @@ import {
 import { throwError } from 'inferno-helpers';
 
 import SwitchCase from './switchCase';
-
-export enum DocumentType {
-	Query,
-	Mutation,
-	Subscription
-}
-
-export interface IDocumentDefinition {
-	type: DocumentType;
-	name: string;
-	variables: VariableDefinitionNode[];
-}
+import { DocumentType, IDocumentDefinition } from '../types';
 
 interface IDefinitionNodes {
 	fragments: DefinitionNode[];
