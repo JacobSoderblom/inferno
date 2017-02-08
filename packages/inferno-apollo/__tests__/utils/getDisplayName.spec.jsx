@@ -4,47 +4,49 @@ import Component from 'inferno-component';
 
 import getDisplayName from '../../dist-es/utils/getDisplayName';
 
-describe('Apollo getDisplayName()', () => {
-	describe('Class component', () => {
-		it('should return the name of the component when no displayName specified', () => {
-			class SomeComponent extends Component {
-				render() {
-					return (
-						<h1>Some component</h1>
-					);
+export default function () {
+	describe('GetDisplayName', () => {
+		describe('Class component', () => {
+			it('should return the name of the component when no displayName specified', () => {
+				class SomeComponent extends Component {
+					render() {
+						return (
+							<h1>Some component</h1>
+						);
+					}
 				}
-			}
 
-			const displayName = getDisplayName(SomeComponent);
+				const displayName = getDisplayName(SomeComponent);
 
-			expect(displayName).to.equal('SomeComponent');
+				expect(displayName).to.equal('SomeComponent');
+			});
+
+			it('should return the name of the component when displayName specified', () => {
+				class SomeComponent extends Component {
+					static displayName = 'ComponentSome'
+
+					render() {
+						return (
+							<h1>Some component</h1>
+						);
+					}
+				}
+
+				const displayName = getDisplayName(SomeComponent);
+
+				expect(displayName).to.equal('ComponentSome');
+			});
 		});
+		describe('Stateless component', () => {
+			it('should return the name of the component when no displayName specified', () => {
+				const SomeComponent = () => (
+					<h1>SomeComponent</h1>
+				);
 
-		it('should return the name of the component when displayName specified', () => {
-			class SomeComponent extends Component {
-				static displayName = 'ComponentSome'
+				const displayName = getDisplayName(SomeComponent);
 
-				render() {
-					return (
-						<h1>Some component</h1>
-					);
-				}
-			}
-
-			const displayName = getDisplayName(SomeComponent);
-
-			expect(displayName).to.equal('ComponentSome');
+				expect(displayName).to.equal('SomeComponent');
+			});
 		});
 	});
-	describe('Stateless component', () => {
-		it('should return the name of the component when no displayName specified', () => {
-			const SomeComponent = () => (
-				<h1>SomeComponent</h1>
-			);
-
-			const displayName = getDisplayName(SomeComponent);
-
-			expect(displayName).to.equal('SomeComponent');
-		});
-	});
-});
+}
