@@ -7,8 +7,8 @@ import {
 
 import { throwError } from 'inferno-helpers';
 
-import SwitchCase from './switchCase';
-import { DocumentType, IDocumentDefinition } from '../types';
+import SwitchCase from './utils/switchCase';
+import { DocumentType, IDocumentDefinition } from './types';
 
 interface IDefinitionNodes {
 	fragments: DefinitionNode[];

@@ -7,7 +7,7 @@ import { throwError } from 'inferno-helpers';
 
 import ApolloHelper from './apolloHelper';
 import { OperationOption, QueryOptions, DocumentType } from './types';
-import parser from './utils/parser';
+import parser from './parser';
 import getDisplayName from './utils/getDisplayName';
 import shallowEqual from './utils/shallowEqual';
 
