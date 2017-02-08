@@ -1,4 +1,4 @@
-import pick from 'lodash/pick';
+import { pick } from 'lodash';
 
 export default function observableQueryFields(observable) {
 	const fields = pick(observable, 'variables',
