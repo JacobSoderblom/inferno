@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import gql from 'graphql-tag';
 
-import SwitchCase from '../dist-es/utils/switchCase';
+import SwitchCase from '../../dist-es/utils/switchCase';
 
 describe('Apollo SwitchCase()', () => {
 
