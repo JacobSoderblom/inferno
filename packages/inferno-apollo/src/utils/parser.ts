@@ -60,7 +60,7 @@ export default function parser(document: DocumentNode): IDocumentDefinition {
 		);
 	}
 
-	if (!queries.length && !mutations.length && !mutations.length) {
+	if (!queries.length && !mutations.length && !subscriptions.length) {
 		throwError(
 			`inferno-apollo only supports a query, subscription, or a mutation per HOC. ${document} had ${queries.length} queries, ${subscriptions.length} subscriptions and ${mutations.length} muations. You can use 'compose' to join multiple operation types to a component`
 		);
