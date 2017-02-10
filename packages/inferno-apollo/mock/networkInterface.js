@@ -1,13 +1,10 @@
-import { NetworkInterface } from 'apollo-client/transport/networkInterface';
+import requestToKey from './requestToKey';
 
-export class MockNetworkInterface extends NetworkInterface {
+export default class MockNetworkInterface {
 	mockedResponsesByKey = {};
 
 	constructor(...mockedResponses) {
-		super();
-		mockedResponses.forEach((mockedResponse) => {
-			this.addMockedReponse(mockedResponse);
-		});
+		mockedResponses.forEach(this.addMockedReponse.bind(this));
 	}
 
 	addMockedReponse(mockedResponse) {
@@ -28,7 +25,7 @@ export class MockNetworkInterface extends NetworkInterface {
 				debugName: request.debugName,
 			};
 
-			const key = requestToKey(parsedRequest);
+			const key = requestToKey(request);
 
 			if (!this.mockedResponsesByKey[key]) {
 				throw new Error('No more mocked responses for the query: ' + print(request.query));
@@ -47,7 +44,9 @@ export class MockNetworkInterface extends NetworkInterface {
 			}
 
 			setTimeout(() => {
-				if (error) return reject(error);
+				if (error) {
+					return reject(error);
+				}
 				return resolve(result);
 			}, delay ? delay : 1);
 		});
