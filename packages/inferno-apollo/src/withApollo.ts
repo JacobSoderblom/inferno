@@ -18,6 +18,7 @@ export default function withApollo(
 
 		public props: any;
 		private client: any;
+		private wrappedComponent: any;
 
 		constructor(props, context) {
 			super(props, context);
@@ -40,7 +41,7 @@ export default function withApollo(
 				);
 			}
 
-			return (this.refs as any).wrappedInstance;
+			return this.wrappedComponent;
 		}
 
 		render() {
@@ -49,7 +50,12 @@ export default function withApollo(
 			});
 
 			if (operationOptions.withRef) {
-				props.ref = 'wrappedInstance';
+				props.ref = (wrappedComponent: any) => {
+					this.wrappedComponent = wrappedComponent;
+					this.refs = Object.assign({}, this.refs, {
+						wrappedComponent
+					});
+				};
 			}
 
 			return createElement(WrappedComponent, props);
