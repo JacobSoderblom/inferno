@@ -71,7 +71,7 @@ export default function graphql(
 				}
 			}
 
-			onComponentDidMount() {
+			componentDidMount() {
 				this.hasMounted = true;
 				if (!this.apolloHelper.isType(DocumentType.Mutation)
 					&& !this.shouldSkip(this.props)) {
@@ -79,8 +79,8 @@ export default function graphql(
 				}
 			}
 
-			onComponentWillUpdate(lastProps, nextProps) {
-				if (shallowEqual(lastProps, nextProps)) {
+			componentWillReceiveProps(nextProps) {
+				if (shallowEqual(this.props, nextProps)) {
 					return;
 				}
 
@@ -92,7 +92,7 @@ export default function graphql(
 
 				if (this.apolloHelper.isType(DocumentType.Subscription)
 					&& operationOptions.shouldResubscribe
-					&& operationOptions.shouldResubscribe(lastProps, nextProps)) {
+					&& operationOptions.shouldResubscribe(this.props, nextProps)) {
 						this.apolloHelper.unsubscribeFromQuery();
 						this.apolloHelper.deleteQueryObservable();
 						this.apolloHelper.updateQuery(nextProps);
@@ -101,7 +101,7 @@ export default function graphql(
 				}
 
 				if (this.shouldSkip(nextProps)) {
-					if (!this.shouldSkip(lastProps)) {
+					if (!this.shouldSkip(this.props)) {
 						this.apolloHelper.unsubscribeFromQuery();
 					}
 
@@ -112,7 +112,7 @@ export default function graphql(
 				this.apolloHelper.subscribeToQuery();
 			}
 
-			onComponentWillUnmount() {
+			componentWillUnmount() {
 				if (this.apolloHelper.isType(DocumentType.Mutation)
 					|| this.apolloHelper.isType(DocumentType.Subscription)) {
 					this.apolloHelper.unsubscribeFromQuery();
