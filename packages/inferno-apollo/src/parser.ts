@@ -11,7 +11,6 @@ import SwitchCase from './utils/switchCase';
 import { DocumentType, IDocumentDefinition } from './types';
 
 interface IDefinitionNodes {
-	fragments: DefinitionNode[];
 	queries: DefinitionNode[];
 	mutations: DefinitionNode[];
 	subscriptions: DefinitionNode[];
@@ -30,14 +29,11 @@ export default function parser(document: DocumentNode): IDocumentDefinition {
 	}
 
 	const {
-		fragments,
 		queries,
 		mutations,
 		subscriptions
 	} = document.definitions.reduce((definitions: IDefinitionNodes, def: DefinitionNode) => {
-		if (def.kind === 'FragmentDefinition') {
-			definitions.fragments.push(def);
-		} else if (def.kind === 'OperationDefinition') {
+		if (def.kind === 'OperationDefinition') {
 			const resolveOperation = SwitchCase({
 				query: () => definitions.queries.push(def),
 				mutation: () => definitions.mutations.push(def),
@@ -48,17 +44,10 @@ export default function parser(document: DocumentNode): IDocumentDefinition {
 
 		return definitions;
 	}, {
-		fragments: [],
 		queries: [],
 		mutations: [],
 		subscriptions: []
 	});
-
-	if (fragments.length && (!queries.length || !mutations.length || !subscriptions.length)) {
-		throwError(
-			`Passing only a fragment to 'graphql' is not yet supported. You must include a query, subscription or mutation as well`
-		);
-	}
 
 	if ((queries.length && mutations.length)
 		|| (queries.length && subscriptions.length)

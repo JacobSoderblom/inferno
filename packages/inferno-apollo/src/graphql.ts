@@ -164,7 +164,7 @@ export default function graphql(
 
 				this.renderedElement = createElement(WrappedComponent, mergedPropsAndData);
 
-				return createElement(WrappedComponent, Object.assign({}, this.props));
+				return this.renderedElement;
 			}
 		}
 

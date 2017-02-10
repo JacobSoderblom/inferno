@@ -41,6 +41,9 @@ export default class ApolloHelper {
 		this.document = options.document;
 		this.displayName = options.displayName;
 		this.operationOption = options.operationOptions;
+		this.operationOption.alias = 'Apollo';
+		this.operationOption.skip = this.defaultMapPropsToSkip;
+		this.operationOption.options = this.defaultMapPropsToOptions;
 		this.operation = options.operation;
 		this.wrappedComponentDisplayName = options.wrappedComponentDisplayName;
 		this.forceRenderChildren = options.forceRenderChildren;
@@ -204,7 +207,7 @@ export default class ApolloHelper {
 	}
 
 	public mapPropsToSkip(props: any): Boolean | any {
-		let propsToSkip = this.operationOption.skip as (props: any) => Boolean;
+		let propsToSkip = this.operationOption.skip as (props: any) => boolean;
 		if (typeof propsToSkip !== 'function') {
 			propsToSkip = (() => this.operationOption.skip as any);
 		}
@@ -212,6 +215,8 @@ export default class ApolloHelper {
 	}
 
 	private defaultMapResultToProps = (props) => props;
+	private defaultMapPropsToOptions = (props: any) => ({});
+	private defaultMapPropsToSkip = (props: any) => false;
 
 	private dataForChildAsMutation = (props: any) => (mutationOpts: MutationOptions) => {
 		const opts = this.calculateOptions(props, mutationOpts);
@@ -224,7 +229,7 @@ export default class ApolloHelper {
 		return this.client.mutate((opts as any));
 	}
 
-	private next(results: any) {
+	private next = (results: any) => {
 		if (this.isType(DocumentType.Subscription)) {
 			this.lastSubscriptionData = results;
 			results = { data: results };
@@ -241,7 +246,7 @@ export default class ApolloHelper {
 		this.forceRenderChildren();
 	}
 
-	private handleError(error: Error): any {
+	private handleError = (error: Error): any => {
 		if (error.hasOwnProperty('graphQLErrors')) {
 			return this.next({ error });
 		}
