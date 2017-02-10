@@ -26,6 +26,9 @@
     "apollo-client"
   ],
   "repository": "https://github.com/infernojs/inferno",
+  "devDependencies": {
+    "inferno-test-utils": "1.2.2"
+  },
   "dependencies": {
     "inferno": "1.2.2",
     "inferno-component": "1.2.2",

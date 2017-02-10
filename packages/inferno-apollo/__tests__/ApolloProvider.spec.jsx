@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import { render as _render } from 'inferno';
 import Component from 'inferno-component';
-import { createStore } from 'redux';
 import { innerHTML } from 'inferno/test/utils';
+import { renderIntoDocument, findRenderedVNodeWithType } from 'inferno-test-utils';
+import * as tests from 'inferno/test/utils';
 import ApolloClient from 'apollo-client';
 
 import ApolloProvider from '../dist-es/ApolloProvider';
@@ -24,13 +25,20 @@ export default function () {
 		});
 
 		const client = new ApolloClient();
-		const store = createStore(() => ({}));
+
+		class Child extends Component {
+			render() {
+				return (
+					<div />
+				);
+			}
+		}
 
 		describe('Children', () => {
 
 			it('should render child', () => {
 				render(
-					<ApolloProvider store={store} client={client}>
+					<ApolloProvider client={client}>
 						<div className="child" />
 					</ApolloProvider>
 				);
@@ -40,7 +48,7 @@ export default function () {
 
 			it('should render one child without any errors', () => {
 				expect(() => render(
-					<ApolloProvider store={store} client={client}>
+					<ApolloProvider client={client}>
 						<div />
 					</ApolloProvider>
 				)).to.not.throw(Error);
@@ -48,14 +56,14 @@ export default function () {
 
 			it('should render no child with errors', () => {
 				expect(() => render(
-					<ApolloProvider store={store} client={client}>
+					<ApolloProvider client={client}>
 					</ApolloProvider>
 				)).to.throw(Error);
 			});
 
 			it('should render more than one child with errors', () => {
 				expect(() => render(
-					<ApolloProvider store={store} client={client}>
+					<ApolloProvider client={client}>
 						<div />
 						<div />
 					</ApolloProvider>
@@ -71,6 +79,17 @@ export default function () {
 					</ApolloProvider>
 				)).to.throw(Error);
 			});
+
+			it('should pass client into child context', () => {
+				const tree = renderIntoDocument((
+					<ApolloProvider client={client}>
+						<Child />
+					</ApolloProvider>
+				));
+
+				const vNode = findRenderedVNodeWithType(tree, Child);
+				expect(vNode.children.context.client).to.equal(client);
+			});
 		});
 
 		describe('Store', () => {
@@ -80,6 +99,17 @@ export default function () {
 						<div />
 					</ApolloProvider>
 				)).to.not.throw(Error);
+			});
+
+			it('should pass store into child context', () => {
+				const tree = renderIntoDocument((
+					<ApolloProvider client={client}>
+						<Child />
+					</ApolloProvider>
+				));
+
+				const vNode = findRenderedVNodeWithType(tree, Child);
+				expect(vNode.children.context.store).to.equal(client.store);
 			});
 		});
 	});
