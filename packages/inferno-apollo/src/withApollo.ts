@@ -32,10 +32,25 @@ export default function withApollo(
 			}
 		}
 
+		getWrappedInstance() {
+			if (!operationOptions.withRef) {
+				throwError(
+					`To access the wrapped instance, you need to specify ` +
+					`{ withRef: true } in the options`
+				);
+			}
+
+			return (this.refs as any).wrappedInstance;
+		}
+
 		render() {
 			const props = Object.assign({}, this.props, {
 				client: this.client
 			});
+
+			if (operationOptions.withRef) {
+				props.ref = 'wrappedInstance';
+			}
 
 			return createElement(WrappedComponent, props);
 		}
