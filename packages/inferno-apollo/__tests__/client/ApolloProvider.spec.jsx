@@ -3,10 +3,9 @@ import { render as _render } from 'inferno';
 import Component from 'inferno-component';
 import { innerHTML } from 'inferno/test/utils';
 import { renderIntoDocument, findRenderedVNodeWithType } from 'inferno-test-utils';
-import * as tests from 'inferno/test/utils';
 import ApolloClient from 'apollo-client';
 
-import ApolloProvider from '../dist-es/ApolloProvider';
+import ApolloProvider from '../../dist-es/ApolloProvider';
 
 export default function () {
 	describe('ApolloProvider', () => {
