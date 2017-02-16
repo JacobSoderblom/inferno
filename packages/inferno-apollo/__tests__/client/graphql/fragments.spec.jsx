@@ -43,12 +43,6 @@ export default function () {
 
 			class Child extends Component {
 
-				componentWillReceiveProps(props) {
-					expect(props.data.loading).to.equal(false);
-					expect(props.data.allPeople).to.equal(data.allPeople);
-					done();
-				}
-
 				render() {
 					return (
 						<div />
