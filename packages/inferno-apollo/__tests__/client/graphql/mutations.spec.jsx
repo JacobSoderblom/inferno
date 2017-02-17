@@ -207,8 +207,14 @@ export default function () {
 		});
 
 		it('should execute mutation with optimisticResponse', done => {
-			const query = gql`mutation addPerson { people { name } }`;
-			const _data = { people: { name: 'Luke' } };
+			const query = gql`mutation addPerson { people { name __typename } __typename }`;
+			const _data = {
+				__typename: 'Mutation',
+				people: {
+					__typename: 'People',
+					name: 'Luke'
+				}
+			};
 			const networkInterface = new MockNetworkInterface({ request: { query }, result: { data: _data } });
 			const client = new ApolloClient({ networkInterface, addTypename: false });
 			const renderer = createRenderer(client);
@@ -219,22 +225,22 @@ export default function () {
 					const { mutate } = this.props;
 					const optimisticResponse = {
 						__typename: 'Mutation',
-						addPerson: {
-							people: {
-								name: 'Optimistic'
-							}
+						people: {
+							__typename: 'People',
+							name: 'Optimistic'
 						}
 					};
-					mutate({ optimisticResponse }).then(result => {
+					const promise = mutate({ optimisticResponse });
+
+					const dataInStore = client.queryManager.getDataWithOptimisticResults();
+					expect(dataInStore['$ROOT_MUTATION.people']).to.eql(
+						optimisticResponse.people
+					);
+
+					promise.then(result => {
 						expect(result.data).to.eql(_data);
 						done();
 					});
-
-					const dataInStore = client.queryManager.getDataWithOptimisticResults();
-
-					expect(dataInStore['$ROOT_MUTATION.addPerson']).to.eql(
-						optimisticResponse.addPerson
-					);
 				}
 
 				render() {
