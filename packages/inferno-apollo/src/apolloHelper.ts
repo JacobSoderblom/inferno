@@ -107,16 +107,10 @@ export default class ApolloHelper {
 		let opts = this.mapPropsToOptions(props);
 
 		if (newOpts) {
-			const newOptsVariables = newOpts.variables || {};
-			opts = Object.assign({}, opts, {
-				...newOpts,
-				variables: {
-					...newOptsVariables
-				}
-			});
+			opts = Object.assign({}, opts, newOpts);
 		}
 
-		if (!opts.variables || this.operation.variables.length) {
+		if (!opts.variables && this.operation.variables.length) {
 			let variables = {};
 			const keys: string[] = Object.keys(this.operation.variables);
 			for (let i = 0; i < keys.length; i++) {
@@ -154,7 +148,7 @@ export default class ApolloHelper {
 		if (this.operationOption.name) {
 			name = this.operationOption.name;
 		} else if (this.isType(DocumentType.Mutation)) {
-			name = 'mutation';
+			name = 'mutate';
 		}
 
 		const newResult = { [name]: result, ownProps: props };
@@ -226,6 +220,7 @@ export default class ApolloHelper {
 		}
 
 		(opts as any).mutation = this.document;
+
 		return this.client.mutate((opts as any));
 	}
 

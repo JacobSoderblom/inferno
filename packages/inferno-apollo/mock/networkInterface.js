@@ -1,3 +1,4 @@
+import { print } from 'graphql-tag/printer';
 import requestToKey from './requestToKey';
 
 export default class MockNetworkInterface {
@@ -19,15 +20,11 @@ export default class MockNetworkInterface {
 
 	query(request) {
 		return new Promise((resolve, reject) => {
-			const parsedRequest = {
-				query: request.query,
-				variables: request.variables,
-				debugName: request.debugName,
-			};
-
 			const key = requestToKey(request);
 
 			if (!this.mockedResponsesByKey[key]) {
+				console.log(key);
+				console.log(request);
 				throw new Error('No more mocked responses for the query: ' + print(request.query));
 			}
 
